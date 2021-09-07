@@ -7,8 +7,8 @@ import { UsersService } from './users.service';
 export class UserCreationDetails{
     @ApiProperty() userName: string;
     @ApiProperty() password: string;
-    @ApiProperty({ required: false }) profilePicture?: string;
     @ApiProperty() name: string;
+    @ApiProperty({ required: false }) profilePicture?: string; 
     @ApiProperty({ required: false }) bio?: string;
 }
 
@@ -37,17 +37,17 @@ export class UsersController {
 
     @Post('/')
     async createUser(@Body() userCreationDetails: UserCreationDetails): Promise<UserEntity>{
-        const user = await this.userService.createUser(userCreationDetails);
+        const user = await this.userService.createUser(userCreationDetails, userCreationDetails.password);
         return user;
     }
 
     @Put('/:userid/follow')
-    followUser(): string {
-        return 'you followed user'
+    async followUser(@Param('userID') followerId: string, @Param('userId')followeeId: string): Promise<UserEntity> {
+        return await this.userService.createUserFollower(followerId, followeeId);
     }
 
     @Delete('/:userid/follow')
-    unfollowUser(): string {
-        return 'unfollowed';
+    async unfollowUser(@Param('userID') followerId: string, @Param('userId')followeeId: string): Promise<UserEntity>{
+        return await this.userService.deleteUserFollower(followerId, followeeId);
     }
 }

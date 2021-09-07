@@ -5,6 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './users/users.entity';
 import { UsersModule } from './users/users.module';
 import { TweetsModule } from './tweets/tweets.module';
+import { LoginAuthModule } from './login-auth/login-auth.module';
+import { TweetsEntity } from './tweets/tweets.entity';
+import { PasswordEntity } from './login-auth/password.entity';
+import { RelationshipEntity } from './users/relationships.entity';
 
 @Module({
   imports: [
@@ -16,10 +20,11 @@ import { TweetsModule } from './tweets/tweets.module';
       synchronize: true,
       logger: 'advanced-console',
       logging: 'all',
-      entities: [UserEntity]
+      entities: [UserEntity, TweetsEntity, PasswordEntity, RelationshipEntity]
     }),
     UsersModule,
     TweetsModule,
+    LoginAuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

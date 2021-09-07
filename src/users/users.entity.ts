@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { PasswordEntity } from 'src/login-auth/password.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne} from 'typeorm';
 
 @Entity('users')
 export class UserEntity {
@@ -22,4 +23,10 @@ export class UserEntity {
 
   @Column({ default:0 })
   followingCount: number;
+
+  @OneToOne((type) => PasswordEntity, (password) => password.user, {
+    lazy: true,
+    cascade: true,
+  })
+  userPassword: PasswordEntity;
 }
