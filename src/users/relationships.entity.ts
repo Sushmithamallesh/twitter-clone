@@ -1,17 +1,17 @@
 import { UserEntity } from "./users.entity";
 import { Entity, JoinColumn, ManyToOne, Unique, PrimaryGeneratedColumn } from 'typeorm';
 
-@Unique('relationship', ['follower', 'followee'])
+@Unique('relationship_pair', ['follower', 'followee'])
 @Entity('relationships')
 export class RelationshipEntity{
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @JoinColumn({name: 'followerId'})
+    @JoinColumn({ name: 'follower_id' })
     @ManyToOne(() => UserEntity)
-    follower: UserEntity
+    follower: UserEntity;
 
-    @JoinColumn({ name: 'followeeId'})
+    @JoinColumn({ name: 'followee_id' })
     @ManyToOne(() => UserEntity)
     followee: UserEntity;
 }

@@ -1,8 +1,10 @@
-import { Body, Delete, NotFoundException, Param, Patch, Post, Put } from '@nestjs/common';
+import { Inject, Injectable, Scope, UseGuards } from '@nestjs/common';
+import { Body, Delete, NotFoundException, Param, Req, Post, Put } from '@nestjs/common';
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from './users.entity';
 import { UsersService } from './users.service';
+import { JwtAuthGaurd } from 'src/login-auth/jwt-auth.gaurd';
 
 export class UserCreationDetails{
     @ApiProperty() userName: string;
@@ -41,13 +43,15 @@ export class UsersController {
         return user;
     }
 
+    @UseGuards(JwtAuthGaurd)
     @Put('/:userid/follow')
-    async followUser(@Param('userID') followerId: string, @Param('userId')followeeId: string): Promise<UserEntity> {
-        return await this.userService.createUserFollower(followerId, followeeId);
+    async followUser(@Param('userid')followeeId: string): Promise<UserEntity> {
+        return await this.userService.createUserFollower(followeeId);
     }
 
+    @UseGuards(JwtAuthGaurd)
     @Delete('/:userid/follow')
-    async unfollowUser(@Param('userID') followerId: string, @Param('userId')followeeId: string): Promise<UserEntity>{
-        return await this.userService.deleteUserFollower(followerId, followeeId);
+    async unfollowUser(@Param('userid')followeeId: string): Promise<UserEntity>{
+        return await this.userService.deleteUserFollower(followeeId);
     }
 }

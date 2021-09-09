@@ -4,14 +4,18 @@ import { LoginAuthService } from './login-auth.service';
 import { PasswordEntity } from './password.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LocalStrategy } from './local.strategy';
-import { UserEntity } from 'src/users/users.entity';
 import { UsersRepository } from 'src/users/users.repository';
+import { JwtModule } from '@nestjs/jwt'
+import { JWTStartegy } from './jwt.strategy';
 
 @Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([PasswordEntity, UsersRepository])],
+  imports: [TypeOrmModule.forFeature([PasswordEntity, UsersRepository]), 
+    JwtModule.register({
+        secret: 'SECRET', 
+        signOptions: {expiresIn:'60s'}})],
   controllers: [LoginAuthController],
-  providers: [LoginAuthService, LocalStrategy],
+  providers: [LoginAuthService, LocalStrategy, JWTStartegy],
   exports: [LoginAuthService],
 })
 
