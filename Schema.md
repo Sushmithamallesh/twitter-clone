@@ -1,5 +1,5 @@
 # database schema
-
+[Draft might have changes later]
 ## Table: users
 
 | column      | data type   | extra info(if needed)|
@@ -23,11 +23,6 @@
 
 ## Table: likes
 
-| column      | data type | extra info(if needed)|
-| :---        |    :----:   |          ---: |
-| id      | uuid       |    |
-| postId   | uuid        | foreignkey(post.id)     |
-| userId | uuid | foreignkey(user.id)|
 
 ## Table: userFollows
 

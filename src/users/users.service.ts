@@ -45,6 +45,10 @@ export class UsersService {
             follower,
             followee,
           });
+        followee.followerCount += 1;
+        follower.followingCount += 1;
+        await this.userRepo.save(followee);
+        await this.userRepo.save(follower);
         return follow.followee;
     }
 
@@ -57,6 +61,10 @@ export class UsersService {
         if(!relationship){
             throw new NotFoundException("The users dont follow each other already");
         }
+        followee.followerCount -= 1;
+        follower.followingCount -= 1;
+        await this.userRepo.save(followee);
+        await this.userRepo.save(follower);
         await this.userFollowRepo.delete(relationship);
         return followee;
     }
