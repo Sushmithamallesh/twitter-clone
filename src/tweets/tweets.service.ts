@@ -44,7 +44,9 @@ export class TweetsService {
     }
 
     async deleteTweet(id:string){
-        return await this.tweetRepo.delete(id);
+        const tweet = await this.tweetRepo.findOne({where:{id:id}});;
+        await this.tweetRepo.delete(id);
+        return tweet;
     }
 
     async likeTweet(tweetId: string){
@@ -54,7 +56,7 @@ export class TweetsService {
         
         existingTweet.likeCount += 1;
         await this.tweetRepo.save(existingTweet);
-        return existingTweet.likeCount
+        return existingTweet;
     }
 
     async unlikeTweet(tweetId: string){
@@ -66,6 +68,6 @@ export class TweetsService {
             existingTweet.likeCount -= 1;
         }
         await this.tweetRepo.save(existingTweet);
-        return existingTweet.likeCount
+        return existingTweet;
     }
 }
