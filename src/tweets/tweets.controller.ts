@@ -1,36 +1,59 @@
-import { Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { TweetsService } from './tweets.service';
+import { ApiBearerAuth, ApiProperty, ApiPropertyOptional} from '@nestjs/swagger';
+import { JwtAuthGaurd } from 'src/login-auth/jwt-auth.gaurd';
+import { JWTStartegy } from 'src/login-auth/jwt.strategy';
+import { TweetsEntity } from './tweets.entity';
+import { query } from 'express';
+import { throws } from 'assert';
+
+export class TweetDetails{
+    @ApiProperty() text:string;
+}
+
+class TweetDetailsQueryParams {
+    @ApiPropertyOptional() authorId: string;
+}
 
 @ApiTags('tweets')
 @Controller('tweets')
 export class TweetsController {
+    constructor(private tweetService: TweetsService){}
+
+    @UseGuards(JwtAuthGaurd)
     @Get('/')
-    getAlltweets(): string{
-        return 'get all tweets';
+    async getAlltweets(): Promise<TweetsEntity[]>{
+        return await this.tweetService.getAllTweets();
     }
 
     @Get('/:tweetId')
-    getTweetInfo(@Param('tweetId') tweetId:string):string {
-        return 'details of post';
+    async getTweetInfo(@Param('tweetId') tweetId:string):Promise<TweetsEntity> {
+        return await this.tweetService.getTweet(tweetId);
     }
 
+    @UseGuards(JwtAuthGaurd)
     @Post('/')
-    createTweet(): string{
-        return 'new post created';
+    async createTweet(@Body() tweetContent: TweetDetails): Promise<Partial<TweetsEntity>>{
+        const tweet = await this.tweetService.createTweet(tweetContent.text);
+        return { tweetContent: tweet.tweetContent, authorId: tweet.authorId };
     }
 
+    @UseGuards(JwtAuthGaurd)
     @Delete('/:tweetId')
-    deleteTweet(@Param('tweetId') tweetId:string): string {
-        return 'deleted post';
+    async deleteTweet(@Param('tweetId') tweetId:string): Promise<string> {
+        await this.tweetService.deleteTweet(tweetId);
+        return;
     }
 
+    @UseGuards(JwtAuthGaurd)
     @Put('/:tweetId/like')
-    likePost(@Param('tweetID') tweetId:string): string {
-        return 'like the post';
+    async likePost(@Param('tweetId') tweetId:string): Promise<number> {
+        return await this.tweetService.likeTweet(tweetId);
     }
 
     @Delete('/:tweetId/unlike')
-    unlikePost(@Param('tweetId') tweetId:string): string {
-        return 'unliked the post';
+    async unlikePost(@Param('tweetId') tweetId:string): Promise<string> {
+        return await this.tweetService.unlikeTweet(tweetId);
     }
 }
