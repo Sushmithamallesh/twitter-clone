@@ -53,7 +53,7 @@ export class TweetsController {
     }
 
     @Delete('/:tweetId/unlike')
-    async unlikePost(@Param('tweetId') tweetId:string): Promise<string> {
+    async unlikePost(@Param('tweetId') tweetId:string): Promise<number> {
         return await this.tweetService.unlikeTweet(tweetId);
     }
 }
