@@ -5,7 +5,7 @@ This is just a simple twitter clone.
 ## Installation
 
 ```bash
-$ npm install
+$npm install
 ```
 
 ## Running the app
@@ -21,15 +21,6 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Database schema
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
+![schema](schema.png)
