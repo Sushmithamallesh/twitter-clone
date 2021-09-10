@@ -41,19 +41,21 @@ export class TweetsController {
 
     @UseGuards(JwtAuthGaurd)
     @Delete('/:tweetId')
-    async deleteTweet(@Param('tweetId') tweetId:string): Promise<string> {
-        await this.tweetService.deleteTweet(tweetId);
-        return;
+    async deleteTweet(@Param('tweetId') tweetId:string): Promise<Partial<TweetsEntity>> {
+        const tweet = await this.tweetService.deleteTweet(tweetId);
+        return { tweetContent: tweet.tweetContent, authorId: tweet.authorId };
     }
 
     @UseGuards(JwtAuthGaurd)
     @Put('/:tweetId/like')
-    async likePost(@Param('tweetId') tweetId:string): Promise<number> {
-        return await this.tweetService.likeTweet(tweetId);
+    async likePost(@Param('tweetId') tweetId:string): Promise<Partial<TweetsEntity>> {
+        const tweet = await this.tweetService.likeTweet(tweetId);
+        return { tweetContent: tweet.tweetContent, authorId: tweet.authorId };
     }
 
     @Delete('/:tweetId/unlike')
-    async unlikePost(@Param('tweetId') tweetId:string): Promise<number> {
-        return await this.tweetService.unlikeTweet(tweetId);
+    async unlikePost(@Param('tweetId') tweetId:string): Promise<Partial<TweetsEntity>> {
+        const tweet = await this.tweetService.unlikeTweet(tweetId);
+        return { tweetContent: tweet.tweetContent, authorId: tweet.authorId };
     }
 }
