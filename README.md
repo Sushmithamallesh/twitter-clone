@@ -21,6 +21,14 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+## Database setup
+
+create database twitterclone;
+create user useradmin with password 'anypass';
+grant all privileges on database twitterclone to useradmin;
+
 ## Database schema
 
 ![schema](schema.png)
+
+

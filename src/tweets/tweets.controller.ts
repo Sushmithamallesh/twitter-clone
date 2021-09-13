@@ -12,9 +12,6 @@ export class TweetDetails{
     @ApiProperty() text:string;
 }
 
-class TweetDetailsQueryParams {
-    @ApiPropertyOptional() authorId: string;
-}
 
 @ApiTags('tweets')
 @Controller('tweets')
